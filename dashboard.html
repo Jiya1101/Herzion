@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Green Credits Ecosystem</title>
+    <meta name="description" content="Your Green Credits dashboard — view credits, activity, quick actions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Stat box grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        @media (max-width: 700px) { .kpi-grid { grid-template-columns: 1fr; } }
+
+        .kpi-box {
+            border: 4px solid var(--black);
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+        .kpi-box--primary { background-color: var(--primary); }
+
+        .kpi-box__label {
+            font-family: var(--font-head);
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.8rem;
+            opacity: 0.6;
+        }
+        .kpi-box__num {
+            font-family: var(--font-head);
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            display: block;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+        }
+        .kpi-box__sub {
+            font-size: 0.78rem;
+            margin-top: 0.4rem;
+            opacity: 0.6;
+        }
+
+        /* Section cards */
+        .dash-card {
+            border: 4px solid var(--black);
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        .dash-card__head {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            font-family: var(--font-head);
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dash-card__body { padding: 1.5rem; }
+
+        /* Quick action buttons */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        @media (max-width: 500px) { .quick-actions { grid-template-columns: 1fr; } }
+
+        .qa-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 1.2rem;
+            border: 4px solid var(--black);
+            background-color: var(--bg);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
+            font-family: inherit;
+            text-align: left;
+        }
+        .qa-btn__icon {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary);
+            border: 3px solid var(--black);
+        }
+        .qa-btn__title {
+            font-family: var(--font-head);
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            display: block;
+        }
+        .qa-btn__sub { font-size: 0.75rem; opacity: 0.6; }
+        .qa-btn:hover {
+            background-color: var(--primary);
+            transform: translate(-2px,-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Meal booking UI */
+        .meal-slot {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            padding: 0.9rem 0;
+            border-bottom: 2px solid var(--black);
+            gap: 1rem;
+        }
+        .meal-slot:last-child { border-bottom: none; }
+        .meal-slot__name { font-weight: 700; font-size: 0.9rem; }
+        .meal-slot__time { font-size: 0.75rem; opacity: 0.6; }
+        .meal-slot__status {
+            font-family: var(--font-head);
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            padding: 0.3rem 0.7rem;
+            border: 2px solid var(--black);
+        }
+        .meal-slot__status--booked  { background-color: var(--primary); }
+        .meal-slot__status--open    { background-color: var(--white); cursor: pointer; }
+        .meal-slot__status--open:hover { background-color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ───────────────────────────── -->
+<nav class="nav">
+    <div class="nav__inner">
+        <a href="index.html" class="nav__logo">
+            <span></span>
+            GCE
+        </a>
+        <ul class="nav__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+            <li><a href="mess.html">Mess Hub</a></li>
+            <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="inbox.html">Inbox</a></li>
+        </ul>
+        <div class="flex flex-gap" style="align-items:center;">
+            <span class="nav__credits-badge" id="nav-credits-badge"></span>
+            <button class="btn btn--sm btn--black" id="btn-logout">Logout</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ─── DASH LAYOUT ─────────────────── -->
+<div class="dash-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar__user">
+            <div class="sidebar__avatar" id="sidebar-avatar">?</div>
+            <div class="sidebar__name" id="sidebar-name">Loading…</div>
+            <div class="sidebar__role">Student</div>
+            <div class="sidebar__credits">
+                <span class="sidebar__credits-num" id="sidebar-credits">—</span>
+                <span class="sidebar__credits-label">Green Credits</span>
+            </div>
+        </div>
+
+        <nav class="sidebar__nav">
+            <a href="dashboard.html" class="active">
+                <span class="sidebar__icon"></span>
+                Dashboard
+            </a>
+            <a href="marketplace.html">
+                <span class="sidebar__icon sidebar__icon--hollow"></span>
+                Marketplace
+            </a>
+            <a href="mess.html">
+                <span class="sidebar__icon sidebar__icon--hollow"></span>
+                Mess Hub
+            </a>
+            <a href="upload.html">
+                <span class="sidebar__icon sidebar__icon--hollow"></span>
+                Upload Notes
+            </a>
+            <a href="login.html" id="sidebar-logout" style="margin-top:2rem;border-top:2px solid var(--black);padding-top:1rem;">
+                <span class="sidebar__icon sidebar__icon--hollow"></span>
+                Logout
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+
+        <!-- Page header -->
+        <div style="margin-bottom:2.5rem;border-bottom:3px solid var(--black);padding-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+            <div>
+                <div style="font-family:var(--font-head);font-size:0.45rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;margin-bottom:0.4rem;">GREEN CREDITS ECOSYSTEM</div>
+                <h1 style="font-size:1rem;text-transform:uppercase;line-height:1.4;" id="dash-greeting">Good Morning</h1>
+            </div>
+            <a href="upload.html" class="btn">+ Upload Notes</a>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+            <div class="kpi-box kpi-box--primary">
+                <div class="kpi-box__label">Green Credits</div>
+                <span class="kpi-box__num" id="kpi-credits">—</span>
+                <div class="kpi-box__sub">Your balance</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-box__label">Notes Uploaded</div>
+                <span class="kpi-box__num" id="kpi-uploads">0</span>
+                <div class="kpi-box__sub">Total submissions</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-box__label">Notes Purchased</div>
+                <span class="kpi-box__num" id="kpi-purchases">0</span>
+                <div class="kpi-box__sub">From marketplace</div>
+            </div>
+        </div>
+
+        <!-- Two-column layout -->
+        <div class="grid grid-2" style="gap:2rem;">
+            <!-- Activity Feed -->
+            <div>
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <span>Recent Activity</span>
+                        <span id="activity-count" style="font-size:0.4rem;opacity:0.6;">0 events</span>
+                    </div>
+                    <div class="dash-card__body">
+                        <div class="activity-list" id="activity-list">
+                            <div style="text-align:center;padding:2rem 0;opacity:0.4;">
+                                <div style="font-family:var(--font-head);font-size:0.5rem;text-transform:uppercase;">No activity yet</div>
+                                <p style="font-size:0.8rem;margin-top:0.5rem;">Start by uploading a note or booking a meal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions + Meal -->
+            <div>
+                <div class="dash-card">
+                    <div class="dash-card__head">Quick Actions</div>
+                    <div class="dash-card__body">
+                        <div class="quick-actions">
+                            <button class="qa-btn" onclick="window.location.href='upload.html'">
+                                <span class="qa-btn__icon"></span>
+                                <span class="qa-btn__title">Upload Notes</span>
+                                <span class="qa-btn__sub">+20 CR earned</span>
+                            </button>
+                            <button class="qa-btn" onclick="window.location.href='marketplace.html'">
+                                <span class="qa-btn__icon"></span>
+                                <span class="qa-btn__title">Buy Items</span>
+                                <span class="qa-btn__sub">Spend credits</span>
+                            </button>
+                            <button class="qa-btn" onclick="window.location.href='mess.html'">
+                                <span class="qa-btn__icon"></span>
+                                <span class="qa-btn__title">Mess Hub</span>
+                                <span class="qa-btn__sub">Book / Rate Meals</span>
+                            </button>
+                            <button class="qa-btn" onclick="giveFeedback()">
+                                <span class="qa-btn__icon"></span>
+                                <span class="qa-btn__title">Feedback</span>
+                                <span class="qa-btn__sub">+2 CR earned</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Removed internal mess schedule, relocated to Mess Hub -->
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+<script>
+    GCE.requireAuth('login.html');
+
+    /* Init user info */
+    const user = GCE.getUser();
+
+    function initDash() {
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+        document.getElementById('dash-greeting').textContent = greeting + ', ' + (user.name || user.roll);
+
+        // sidebar
+        const name = user.name || user.roll;
+        document.getElementById('sidebar-avatar').textContent  = name.charAt(0).toUpperCase();
+        document.getElementById('sidebar-name').textContent    = name;
+        document.getElementById('sidebar-credits').textContent = GCE.getCredits() + ' CR';
+
+        // kpi
+        document.getElementById('kpi-credits').textContent  = GCE.getCredits();
+        updateNavBadge();
+
+        // purchases & uploads count
+        const purchases = GCE.getPurchases();
+        document.getElementById('kpi-purchases').textContent = purchases.length;
+
+        const allNotes = GCE.getNotes();
+        const myNotes  = allNotes.filter(n => n.uploader === (user.roll || user.name));
+        document.getElementById('kpi-uploads').textContent = myNotes.length;
+
+        renderActivity();
+    }
+
+    function renderActivity() {
+        const log = GCE.getActivity();
+        const container = document.getElementById('activity-list');
+        document.getElementById('activity-count').textContent = log.length + ' events';
+
+        if (!log.length) return;
+
+        container.innerHTML = log.slice(0, 8).map(a => `
+            <div class="activity-item">
+                <span class="activity-dot activity-dot--${a.type}"></span>
+                <div>
+                    <div class="activity-text">${a.reason}</div>
+                    <div class="activity-time">${GCE.timeAgo(a.ts)}</div>
+                </div>
+                <span class="activity-delta" style="color:${a.type==='earn'?'#1a7a1a':'#aa1111'}">${a.delta} CR</span>
+            </div>
+        `).join('');
+    }
+
+    function giveFeedback() {
+        GCE.addCredits(2, 'Submitted mess feedback');
+        updateCreditsDisplay();
+        renderActivity();
+        showToast('Feedback submitted — +2 CR added!', 'success');
+    }
+
+    function updateCreditsDisplay() {
+        const c = GCE.getCredits();
+        document.getElementById('sidebar-credits').textContent = c + ' CR';
+        document.getElementById('kpi-credits').textContent = c;
+        updateNavBadge();
+    }
+
+    initDash();
+
+    // sidebar logout
+    document.getElementById('sidebar-logout').addEventListener('click', e => {
+        e.preventDefault();
+        GCE.logout();
+        window.location.href = 'index.html';
+    });
+</script>
+</body>
+</html>

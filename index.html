@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Credits Ecosystem — Campus Economy Platform</title>
+    <meta name="description" content="A structured campus economy that rewards students for efficient resource usage. Pre-book meals, share notes, earn green credits.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─────────────────────── -->
+<nav class="nav">
+    <div class="nav__inner">
+        <a href="index.html" class="nav__logo">
+            <span></span>
+            GCE
+        </a>
+        <ul class="nav__links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="marketplace.html" class="nav__link--hide">Marketplace</a></li>
+            <li><a href="mess.html" class="nav__link--hide">Mess Hub</a></li>
+            <li><a href="dashboard.html" class="nav__link--hide">Dashboard</a></li>
+            <li><a href="upload.html" class="nav__link--hide">Upload</a></li>
+            <li><a href="inbox.html">Inbox</a></li>
+        </ul>
+        <div class="flex flex-gap" style="align-items:center;">
+            <span class="nav__credits-badge" id="nav-credits-badge"></span>
+            <a href="login.html" class="btn btn--sm" id="nav-login-cta">Enter App</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ─── HERO ──────────────────────────── -->
+<section class="hero">
+    <div class="hero__inner">
+        <span class="hero__eyebrow">Campus Economy System v1.0</span>
+        <h1 class="hero__title">
+            Green Credits<br>
+            <em>Ecosystem</em>
+        </h1>
+        <p class="hero__subtitle">
+            A structured system that rewards students for efficient resource usage —
+            pre-book meals, share notes, earn credits, spend responsibly.
+        </p>
+        <div class="hero__cta">
+            <a href="login.html" class="btn btn--lg" id="hero-enter-btn">Enter App</a>
+            <a href="#how-it-works" class="btn btn--white btn--lg">How It Works</a>
+        </div>
+    </div>
+</section>
+
+<!-- ─── TICKER ─────────────────────────── -->
+<div class="ticker">
+    <div class="ticker__inner" id="ticker-text">
+        <!-- duplicated for seamless loop -->
+    </div>
+</div>
+
+<!-- ─── STATS STRIP ───────────────────── -->
+<div class="stats-strip" id="stats-strip">
+    <div class="stats-strip__item">
+        <span class="stats-strip__num" id="stat-meals">12,847</span>
+        <span class="stats-strip__label">Meals Optimized</span>
+    </div>
+    <div class="stats-strip__item">
+        <span class="stats-strip__num" id="stat-resources">5,391</span>
+        <span class="stats-strip__label">Resources Reused</span>
+    </div>
+    <div class="stats-strip__item">
+        <span class="stats-strip__num" id="stat-users">1,024</span>
+        <span class="stats-strip__label">Active Users</span>
+    </div>
+</div>
+
+<!-- ─── PROBLEM ───────────────────────── -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <div class="section-tag">Problem Space</div>
+                <h2 class="section-title">What We Are Solving</h2>
+            </div>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <div class="card__tag">01</div>
+                <h3 class="card__title">Food Waste</h3>
+                <p class="card__body">Unpredictable attendance leads to systematic overproduction in campus mess facilities. Kitchens cook blind, students skip meals — food is discarded daily.</p>
+            </div>
+            <div class="card">
+                <div class="card__tag">02</div>
+                <h3 class="card__title">Resource Inefficiency</h3>
+                <p class="card__body">Usable hardware, textbooks, and printed notes are discarded at semester end. No platform exists to bring supply and demand together at campus-scale.</p>
+            </div>
+            <div class="card">
+                <div class="card__tag">03</div>
+                <h3 class="card__title">Behavioral Gap</h3>
+                <p class="card__body">Students lack incentive to act responsibly. Right behavior exists but has no reward signal. Without data-driven feedback loops, change cannot be systematic.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── SOLUTION ──────────────────────── -->
+<section class="section section--black">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <div class="section-tag">Our Approach</div>
+                <h2 class="section-title" style="color:#fff;">The Solution Stack</h2>
+            </div>
+        </div>
+        <div class="grid grid-2">
+            <div class="card card--orange">
+                <div class="card__tag">Module 01</div>
+                <h3 class="card__title">Mess Optimization</h3>
+                <ul class="blist">
+                    <li>Meal pre-booking system — plan a day ahead</li>
+                    <li>Attendance tracking & predictive cooking</li>
+                    <li>Feedback loop for menu improvement</li>
+                    <li>Personalized nutritional suggestions</li>
+                    <li>Credits for consistent pre-booking behavior</li>
+                </ul>
+            </div>
+            <div class="card card--orange">
+                <div class="card__tag">Module 02</div>
+                <h3 class="card__title">Notes &amp; Resource Marketplace</h3>
+                <ul class="blist">
+                    <li>Upload handwritten or typed notes for credits</li>
+                    <li>Buy quality notes with earned credits</li>
+                    <li>Subject-filtered catalog with ratings</li>
+                    <li>Peer-to-peer hardware exchange (roadmap)</li>
+                    <li>Verified uploader system for quality control</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CREDIT SYSTEM ─────────────────── -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <div class="section-tag">Credit Economy</div>
+                <h2 class="section-title">Earn vs Lose Credits</h2>
+            </div>
+        </div>
+        <div class="grid grid-2">
+            <div>
+                <table class="credit-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Earn Credits [+]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Pre-book meal</td><td><span class="earn">+5 CR</span></td></tr>
+                        <tr><td>Attend pre-booked meal</td><td><span class="earn">+3 CR</span></td></tr>
+                        <tr><td>Submit feedback</td><td><span class="earn">+2 CR</span></td></tr>
+                        <tr><td>Upload quality notes</td><td><span class="earn">+20 CR</span></td></tr>
+                        <tr><td>Donate resource</td><td><span class="earn">+10 CR</span></td></tr>
+                        <tr><td>Referral (new user joins)</td><td><span class="earn">+15 CR</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <table class="credit-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Lose Credits [-]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Miss a pre-booked meal</td><td><span class="lose">-5 CR</span></td></tr>
+                        <tr><td>Late cancellation (&lt;2h)</td><td><span class="lose">-3 CR</span></td></tr>
+                        <tr><td>Food plate waste (reported)</td><td><span class="lose">-8 CR</span></td></tr>
+                        <tr><td>Failed quality submission</td><td><span class="lose">-5 CR</span></td></tr>
+                        <tr><td>Buy notes from marketplace</td><td><span class="lose">−price</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mt-4" style="background:#fff;border:4px solid #000;padding:1.5rem;box-shadow:6px 6px 0 #000;">
+            <p style="font-family:var(--font-head);font-size:0.5rem;text-transform:uppercase;letter-spacing:0.06em;">
+                Default Starting Credits: <span style="color:var(--primary);text-shadow:2px 2px 0 #000;">50 CR</span> &mdash;
+                All new users begin with 50 green credits on signup.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ─── HOW IT WORKS ──────────────────── -->
+<section id="how-it-works" class="section section--orange">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <div class="section-tag">Workflow</div>
+                <h2 class="section-title">How It Works</h2>
+            </div>
+        </div>
+        <div class="grid grid-4" style="position:relative;">
+            <div class="step-card">
+                <div class="step-card__num">Step 01</div>
+                <h3 class="step-card__title">Pre-Book</h3>
+                <p class="step-card__body">Log in and reserve your meal slot for the next day. Helps the mess prepare exactly what is needed.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-card__num">Step 02</div>
+                <h3 class="step-card__title">Attend</h3>
+                <p class="step-card__body">Scan in at the mess or mark attendance via the app. Your slot is confirmed and tracked.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-card__num">Step 03</div>
+                <h3 class="step-card__title">Earn</h3>
+                <p class="step-card__body">Credits are automatically added to your wallet. Upload notes for bonus credits.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-card__num">Step 04</div>
+                <h3 class="step-card__title">Spend</h3>
+                <p class="step-card__body">Use credits to buy notes, access premium resources, or redeem for campus perks.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA ───────────────────────────── -->
+<section class="section section--black" style="text-align:center;">
+    <div class="container">
+        <div class="section-tag" style="background:var(--primary);color:#000;margin:0 auto 2rem;display:inline-block;">Ready?</div>
+        <h2 class="section-title" style="color:#fff;font-size:clamp(1rem,2.5vw,1.8rem);max-width:700px;margin:0 auto 2.5rem;line-height:1.5;">
+            Start Using Resources Responsibly.<br>Earn Value From Your Actions.
+        </h2>
+        <a href="login.html" class="btn btn--lg" style="background-color:var(--primary);">Start Using the Platform</a>
+    </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────── -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer__top">
+            <div>
+                <div class="footer__logo">Green Credits Ecosystem</div>
+                <p class="footer__desc">A campus-scale economy that incentivizes responsible behavior through a structured credit system. Built for students, powered by students.</p>
+            </div>
+            <div>
+                <div class="footer__heading">Platform</div>
+                <div class="footer__links">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="marketplace.html">Marketplace</a>
+                    <a href="upload.html">Upload Notes</a>
+                    <a href="login.html">Login / Register</a>
+                </div>
+            </div>
+            <div>
+                <div class="footer__heading">About</div>
+                <div class="footer__links">
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#credits">Credit System</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <span class="footer__copy">Green Credits Ecosystem &copy; 2026 — All Rights Reserved</span>
+            <span class="footer__copy">System Status: <span style="color:var(--primary);">Operational</span></span>
+        </div>
+    </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+<script>
+    /* Ticker content */
+    const tickerItems = [
+        'Meals Optimized: 12,847',
+        'Resources Reused: 5,391',
+        'Active Users: 1,024',
+        'Notes Uploaded: 412',
+        'Credits Circulating: 89,340',
+        'Zero Waste Target: Q3 2026',
+    ];
+    function buildTicker() {
+        const inner = document.getElementById('ticker-text');
+        const text = tickerItems.map(t => `${t} <span class="ticker__sep">|</span>`).join(' ');
+        inner.innerHTML = text + ' ' + text; // duplicate for seamless loop
+    }
+    buildTicker();
+
+    /* Update CTA based on auth */
+    if (GCE.isLoggedIn()) {
+        const loginCta = document.getElementById('nav-login-cta');
+        if (loginCta) { loginCta.textContent = 'Dashboard'; loginCta.href = 'dashboard.html'; }
+        const heroCta = document.getElementById('hero-enter-btn');
+        if (heroCta)  { heroCta.textContent = 'Go to Dashboard'; heroCta.href = 'dashboard.html'; }
+        document.querySelectorAll('[href="login.html"]').forEach(el => {
+            if (el.id !== 'nav-login-cta' && el.id !== 'hero-enter-btn') {
+                el.href = 'dashboard.html';
+            }
+        });
+        updateNavBadge();
+    }
+</script>
+</body>
+</html>

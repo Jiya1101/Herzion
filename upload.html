@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Notes — Green Credits Ecosystem</title>
+    <meta name="description" content="Upload your notes to the Green Credits marketplace and earn 20 credits.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .upload-layout {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 3rem;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            .upload-layout { grid-template-columns: 1fr; }
+        }
+
+        /* Info sidebar */
+        .upload-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-box {
+            border: 4px solid var(--black);
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .info-box__head {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 0.8rem 1.2rem;
+            font-family: var(--font-head);
+            font-size: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .info-box__body { padding: 1.2rem; }
+
+        .reward-display {
+            background-color: var(--primary);
+            border: 4px solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .reward-display__num {
+            font-family: var(--font-head);
+            font-size: 3rem;
+            text-shadow: 4px 4px 0 var(--black);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .reward-display__label {
+            font-family: var(--font-head);
+            font-size: 0.55rem;
+            text-transform: uppercase;
+        }
+
+        /* Form box */
+        .upload-form-box {
+            border: 4px solid var(--black);
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .upload-form-box__head {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 1.2rem 2rem;
+            font-family: var(--font-head);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .upload-form-box__body { padding: 2rem; }
+
+        /* Character counter */
+        .char-counter {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            text-align: right;
+        }
+
+        /* Success state */
+        .success-state {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-state__icon {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-shadow: 4px 4px 0 var(--black);
+        }
+
+        .success-state__title {
+            font-family: var(--font-head);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            height: 8px;
+            background-color: var(--bg);
+            border: 3px solid var(--black);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .progress-bar__fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ───────────────────────────── -->
+<nav class="nav">
+    <div class="nav__inner">
+        <a href="index.html" class="nav__logo">
+            <span></span>
+            GCE
+        </a>
+        <ul class="nav__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+            <li><a href="mess.html">Mess Hub</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="upload.html" class="active">Upload</a></li>
+            <li><a href="inbox.html">Inbox</a></li>
+        </ul>
+        <div class="flex flex-gap" style="align-items:center;">
+            <span class="nav__credits-badge" id="nav-credits-badge"></span>
+            <button class="btn btn--sm btn--black" id="btn-logout">Logout</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ─── PAGE HEADER ──────────────────── -->
+<div class="page-header">
+    <div class="container">
+        <div class="page-header__tag">Listing Center</div>
+        <h1 class="page-header__title">List Physical Resources &amp; Earn Credits</h1>
+    </div>
+</div>
+
+<!-- ─── MAIN LAYOUT ──────────────────── -->
+<div class="upload-layout">
+
+    <!-- Form -->
+    <div>
+        <!-- Progress bar (hidden by default) -->
+        <div class="progress-bar hidden" id="progress-bar">
+            <div class="progress-bar__fill" id="progress-fill"></div>
+        </div>
+
+        <div class="upload-form-box" id="upload-box">
+            <div class="upload-form-box__head">Resource Listing Form</div>
+            <div class="upload-form-box__body">
+                <form id="upload-form" onsubmit="handleUpload(event)" novalidate>
+
+                    <div class="form-group">
+                        <label for="item-category" class="form-label">Category *</label>
+                        <select id="item-category" class="form-select" onchange="toggleFormFields()">
+                            <option value="Study Material">Study Material (Physical Notes, Books, Printed Papers)</option>
+                            <option value="Hardware">Hardware (Components, Boards, Tools)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item-title" class="form-label" id="title-label">Title / Note Name *</label>
+                        <input type="text" id="item-title" class="form-input" placeholder="e.g. Complete Data Structures Notes" required maxlength="100" oninput="updateCounter('item-title', 'title-counter', 100)">
+                        <div class="char-counter"><span id="title-counter">0</span>/100</div>
+                    </div>
+
+                    <!-- STUDY MATERIAL FIELDS -->
+                    <div id="study-fields">
+                        <div class="form-group">
+                            <label for="study-course" class="form-label">Course Name *</label>
+                            <input type="text" id="study-course" class="form-input" placeholder="e.g. Data Structures">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-code" class="form-label">Course Code *</label>
+                            <input type="text" id="study-code" class="form-input" placeholder="e.g. CS301" maxlength="10" style="text-transform:uppercase;">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-branch" class="form-label">Branch *</label>
+                            <input type="text" id="study-branch" class="form-input" placeholder="e.g. Computer Science">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-includes" class="form-label">What it includes *</label>
+                            <input type="text" id="study-includes" class="form-input" placeholder="e.g. Chapter 1-8 handwritten notes">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-pages" class="form-label">No. of Pages *</label>
+                            <input type="number" id="study-pages" class="form-input" placeholder="e.g. 48" min="1" max="500">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Photo of Material (Optional)</label>
+                            <div class="upload-zone" id="upload-zone">
+                                <input type="file" id="note-file" accept=".jpg,.jpeg,.png" onchange="handleFileSelect(this)">
+                                <span class="upload-zone__icon" id="upload-icon">[+]</span>
+                                <span class="upload-zone__text" id="upload-text">
+                                    Click or drop photo here<br>
+                                    <span style="font-family:var(--font-body);font-size:0.7rem;opacity:0.6;margin-top:0.5rem;display:inline-block;">JPG, PNG accepted</span>
+                                </span>
+                            </div>
+                            <span class="form-hint" id="file-name-display"></span>
+                        </div>
+                    </div>
+
+                    <!-- HARDWARE FIELDS -->
+                    <div id="hardware-fields" class="hidden">
+                        <div class="form-group">
+                            <label for="hw-condition" class="form-label">Condition *</label>
+                            <select id="hw-condition" class="form-select">
+                                <option value="Like New">Like New</option>
+                                <option value="Good">Good</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Needs Repair">Needs Repair</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hw-desc" class="form-label">Detailed Description</label>
+                            <textarea id="hw-desc" class="form-textarea" placeholder="Describe the item, age, components included..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- SHARED PRICE -->
+                    <div class="form-group mt-3">
+                        <label for="item-price" class="form-label">Listing Price (Credits) *</label>
+                        <input type="number" id="item-price" class="form-input" placeholder="e.g. 15" required min="1" max="50">
+                        <span class="form-hint">Recommended: 5–20 CR. Max 50 CR.</span>
+                    </div>
+
+                    <div style="border-top:3px solid var(--black);padding-top:1.5rem;margin-top:0.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                        <button type="submit" class="btn btn--lg" id="submit-btn">
+                            Submit &amp; Earn +20 CR
+                        </button>
+                        <button type="button" class="btn btn--white" onclick="resetForm()">
+                            Clear Form
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Success state (hidden by default) -->
+        <div class="hidden" id="success-box">
+            <div class="upload-form-box">
+                <div class="upload-form-box__head" style="background-color:#1a7a1a;">Upload Successful</div>
+                <div class="upload-form-box__body">
+                    <div class="success-state">
+                        <span class="success-state__icon">[OK]</span>
+                        <div class="success-state__title">Listing Submitted!</div>
+                        <p style="font-size:0.9rem;opacity:0.7;max-width:380px;margin:0 auto 2rem;">
+                            Your item is now live on the marketplace. Interested students will chat with you to arrange pickup. +20 green credits have been added to your account.
+                        </p>
+                        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+                            <a href="marketplace.html" class="btn">View Marketplace</a>
+                            <button class="btn btn--white" onclick="resetForm()">Upload Another</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info sidebar -->
+    <div class="upload-info">
+
+        <!-- Reward display -->
+        <div class="reward-display">
+            <span class="reward-display__num">+20</span>
+            <span class="reward-display__label">Credits Per Upload</span>
+        </div>
+
+        <!-- Your balance -->
+        <div class="info-box">
+            <div class="info-box__head">Your Balance</div>
+            <div class="info-box__body">
+                <div style="font-family:var(--font-head);font-size:1.5rem;margin-bottom:0.3rem;" id="info-credits">— CR</div>
+                <div style="font-size:0.8rem;opacity:0.6;">Current green credits</div>
+            </div>
+        </div>
+
+        <!-- Guidelines -->
+        <div class="info-box">
+            <div class="info-box__head">Submission Rules</div>
+            <div class="info-box__body">
+                <ul class="blist">
+                    <li>Items must be physical copies (handwritten notes, books, modules)</li>
+                    <li>No digital pdf dumps (unless printed and bound)</li>
+                    <li>Exchange location should be agreed upon via chat</li>
+                    <li>Price must be fair and reasonable</li>
+                    <li>Spam listings will be removed</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Earning guide -->
+        <div class="info-box">
+            <div class="info-box__head">Earn More Credits</div>
+            <div class="info-box__body">
+                <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                    <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.4rem 0;border-bottom:2px solid var(--black);">
+                        <span>List a resource</span>
+                        <strong style="color:#1a7a1a;font-family:var(--font-head);font-size:0.5rem;">+20 CR</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.4rem 0;border-bottom:2px solid var(--black);">
+                        <span>Pre-book meal</span>
+                        <strong style="color:#1a7a1a;font-family:var(--font-head);font-size:0.5rem;">+5 CR</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.4rem 0;border-bottom:2px solid var(--black);">
+                        <span>Give feedback</span>
+                        <strong style="color:#1a7a1a;font-family:var(--font-head);font-size:0.5rem;">+2 CR</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding:0.4rem 0;">
+                        <span>Donate resource</span>
+                        <strong style="color:#1a7a1a;font-family:var(--font-head);font-size:0.5rem;">+10 CR</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+<script>
+    GCE.requireAuth('login.html');
+
+    // Init
+    document.getElementById('info-credits').textContent = GCE.getCredits() + ' CR';
+
+    function updateCounter(inputId, counterId, max) {
+        const val = document.getElementById(inputId).value.length;
+        document.getElementById(counterId).textContent = val;
+    }
+
+    function handleFileSelect(input) {
+        const file = input.files[0];
+        if (!file) return;
+        document.getElementById('upload-icon').textContent = '[FILE]';
+        document.getElementById('upload-text').innerHTML = `<strong>${file.name}</strong><br><span style="font-size:0.7rem;opacity:0.6;">${(file.size / 1024).toFixed(1)} KB</span>`;
+        document.getElementById('file-name-display').textContent = 'File selected: ' + file.name;
+    }
+
+    function toggleFormFields() {
+        const cat = document.getElementById('item-category').value;
+        const studyF = document.getElementById('study-fields');
+        const hwF = document.getElementById('hardware-fields');
+        const label = document.getElementById('title-label');
+
+        if (cat === 'Hardware') {
+            studyF.classList.add('hidden');
+            hwF.classList.remove('hidden');
+            label.textContent = 'Hardware Item Name *';
+        } else {
+            studyF.classList.remove('hidden');
+            hwF.classList.add('hidden');
+            label.textContent = 'Title / Item Name *';
+        }
+    }
+
+    function validateForm() {
+        const cat = document.getElementById('item-category').value;
+        const title = document.getElementById('item-title').value.trim();
+        const price = parseInt(document.getElementById('item-price').value);
+
+        if (!title) { showToast('Please add a title', 'error'); return null; }
+        if (!price || price < 1 || price > 50) { showToast('Valid price (1-50) is required', 'error'); return null; }
+
+        if (cat === 'Study Material') {
+            const courseName = document.getElementById('study-course').value.trim();
+            const courseCode = document.getElementById('study-code').value.trim();
+            const branch = document.getElementById('study-branch').value.trim();
+            const includes = document.getElementById('study-includes').value.trim();
+            const pages = parseInt(document.getElementById('study-pages').value) || null;
+
+            if (!courseName || !courseCode || !branch) {
+                showToast('Course Name, Code, and Branch required', 'error');
+                return null;
+            }
+
+            return { category: cat, title, courseName, courseCode: courseCode.toUpperCase(), branch, includes, pages, price };
+        } else {
+            const condition = document.getElementById('hw-condition').value;
+            const desc = document.getElementById('hw-desc').value.trim();
+
+            if (!desc) { showToast('Description is required for hardware', 'error'); return null; }
+
+            return { category: cat, title, condition, desc, price };
+        }
+    }
+
+    function handleUpload(e) {
+        e.preventDefault();
+        const data = validateForm();
+        if (!data) return;
+
+        // Show progress
+        const btn = document.getElementById('submit-btn');
+        btn.textContent = 'Publishing...';
+        btn.disabled = true;
+
+        const progressBar  = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
+        progressBar.classList.remove('hidden');
+
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 25;
+            if (progress > 95) progress = 95;
+            progressFill.style.width = progress + '%';
+        }, 200);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            progressFill.style.width = '100%';
+
+            setTimeout(() => {
+                // Save & award credits
+                GCE.uploadNote(data);
+                const newCredits = GCE.getCredits();
+
+                // Update UI
+                document.getElementById('info-credits').textContent = newCredits + ' CR';
+                updateNavBadge();
+
+                // Show success
+                document.getElementById('upload-box').classList.add('hidden');
+                document.getElementById('success-box').classList.remove('hidden');
+                progressBar.classList.add('hidden');
+
+                showToast('+20 CR added to your account!', 'success');
+            }, 300);
+        }, 1600);
+    }
+
+    function resetForm() {
+        document.getElementById('upload-form').reset();
+        toggleFormFields();
+        document.getElementById('upload-icon').textContent = '[+]';
+        document.getElementById('upload-text').innerHTML = `Click or drop photo here<br><span style="font-family:var(--font-body);font-size:0.7rem;opacity:0.6;margin-top:0.5rem;display:inline-block;">JPG, PNG accepted</span>`;
+        document.getElementById('file-name-display').textContent = '';
+        document.getElementById('title-counter').textContent = '0';
+        document.getElementById('submit-btn').textContent = 'Submit & Earn +20 CR';
+        document.getElementById('submit-btn').disabled = false;
+        document.getElementById('progress-bar').classList.add('hidden');
+        document.getElementById('progress-fill').style.width = '0%';
+        document.getElementById('upload-box').classList.remove('hidden');
+        document.getElementById('success-box').classList.add('hidden');
+        document.getElementById('info-credits').textContent = GCE.getCredits() + ' CR';
+    }
+</script>
+</body>
+</html>

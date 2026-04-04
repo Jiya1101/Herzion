@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace — Green Credits Ecosystem</title>
+    <meta name="description" content="Browse and buy student notes using your Green Credits.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { min-height: 100vh; }
+
+        /* Filter bar */
+        .filter-bar {
+            background-color: var(--white);
+            border-bottom: 4px solid var(--black);
+            padding: 1rem 0;
+            position: sticky;
+            top: 68px;
+            z-index: 50;
+        }
+
+        .filter-bar__inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-family: var(--font-head);
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+        }
+
+        .filter-chip {
+            display: inline-block;
+            font-family: var(--font-head);
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.4rem 0.9rem;
+            border: 3px solid var(--black);
+            background-color: var(--white);
+            cursor: pointer;
+            transition: background-color var(--transition);
+        }
+        .filter-chip.active { background-color: var(--primary); }
+        .filter-chip:hover:not(.active) { background-color: var(--bg); }
+
+        .filter-search {
+            margin-left: auto;
+            border: 3px solid var(--black);
+            background-color: var(--bg);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            outline: none;
+            min-width: 220px;
+        }
+        .filter-search:focus { box-shadow: var(--shadow-sm); }
+
+        /* Notes grid */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+        @media (max-width: 900px) { .notes-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .notes-grid { grid-template-columns: 1fr; } }
+
+        /* Purchase confirm modal */
+        .confirm-preview {
+            background-color: var(--bg);
+            border: 3px solid var(--black);
+            padding: 1.2rem;
+            margin: 1rem 0;
+        }
+        .confirm-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            padding: 0.4rem 0;
+            border-bottom: 2px solid rgba(0,0,0,0.15);
+        }
+        .confirm-row:last-child { border-bottom: none; }
+        .confirm-row strong { font-family: var(--font-head); font-size: 0.5rem; }
+
+        /* Empty state */
+        .empty-state {
+            padding: 5rem 2rem;
+            text-align: center;
+            border: 4px dashed var(--black);
+            background-color: var(--white);
+        }
+        .empty-state__title {
+            font-family: var(--font-head);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ───────────────────────────── -->
+<nav class="nav">
+    <div class="nav__inner">
+        <a href="index.html" class="nav__logo">
+            <span></span>
+            GCE
+        </a>
+        <ul class="nav__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="marketplace.html" class="active">Marketplace</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="inbox.html">Inbox</a></li>
+        </ul>
+        <div class="flex flex-gap" style="align-items:center;">
+            <span class="nav__credits-badge" id="nav-credits-badge"></span>
+            <button class="btn btn--sm btn--black" id="btn-logout">Logout</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ─── PAGE HEADER ──────────────────── -->
+<div class="page-header">
+    <div class="container">
+        <div class="page-header__tag">Marketplace</div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+            <h1 class="page-header__title">Notes &amp; Resources</h1>
+            <div style="display:flex;align-items:center;gap:1rem;">
+                <span style="font-size:0.85rem;opacity:0.6;">Your balance:</span>
+                <span style="font-family:var(--font-head);font-size:0.65rem;background-color:var(--primary);border:3px solid var(--black);padding:0.4rem 0.8rem;box-shadow:var(--shadow-sm);" id="balance-display">— CR</span>
+                <a href="upload.html" class="btn btn--sm">+ Upload &amp; Earn</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── FILTER BAR ────────────────────── -->
+<div class="filter-bar">
+    <div class="filter-bar__inner">
+        <span class="filter-label">Category:</span>
+        <button class="filter-chip active" onclick="setCategory('ALL', this)">All</button>
+        <button class="filter-chip" onclick="setCategory('Study Material', this)">Study Material</button>
+        <button class="filter-chip" onclick="setCategory('Hardware', this)">Hardware</button>
+        <input type="text" class="filter-search" id="search-input" placeholder="Search resources..." oninput="renderNotes()">
+    </div>
+</div>
+
+<!-- ─── NOTES GRID ────────────────────── -->
+<div class="container">
+    <div class="notes-grid" id="notes-grid"></div>
+    <div id="empty-state" class="empty-state hidden">
+        <div class="empty-state__title">No notes found</div>
+        <p>Try a different filter or upload your own notes to earn 20 CR.</p>
+        <a href="upload.html" class="btn mt-4">Upload Notes</a>
+    </div>
+</div>
+
+<!-- ─── CHAT MODAL ────────────────── -->
+<div class="modal-overlay" id="chat-modal">
+    <div class="modal">
+        <div class="modal__title" id="modal-title">Start Chat</div>
+        <div class="confirm-preview" id="modal-preview" style="text-align:left;"></div>
+        <textarea id="chat-message" class="form-textarea" style="margin-top:1rem;" placeholder="Type your message here... e.g. 'Hey, I'm interested in these notes!'"></textarea>
+        <div style="display:flex;gap:1rem;margin-top:1.5rem;">
+            <button class="btn btn--full" id="modal-confirm-btn">Send Message</button>
+            <button class="btn btn--white btn--full" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+<script>
+    GCE.requireAuth('login.html');
+
+    let currentCategory = 'ALL';
+    let pendingNoteId  = null;
+
+    function setCategory(cat, btn) {
+        currentCategory = cat;
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        renderNotes();
+    }
+
+    function renderNotes() {
+        const query = (document.getElementById('search-input').value || '').toLowerCase();
+        const notes = GCE.getNotes();
+
+        const filtered = notes.filter(n => {
+            const matchCat = currentCategory === 'ALL' || n.category === currentCategory;
+            const matchSearch = !query || 
+                n.title.toLowerCase().includes(query) || 
+                (n.courseCode && n.courseCode.toLowerCase().includes(query)) ||
+                (n.branch && n.branch.toLowerCase().includes(query));
+            return matchCat && matchSearch;
+        });
+
+        const grid = document.getElementById('notes-grid');
+        const empty = document.getElementById('empty-state');
+
+        if (!filtered.length) {
+            grid.innerHTML = '';
+            empty.classList.remove('hidden');
+            return;
+        }
+
+        empty.classList.add('hidden');
+        grid.innerHTML = filtered.map(n => {
+            const owned    = GCE.hasPurchased(n.id);
+            const isMyNote = (GCE.getUser()?.roll === n.uploader || GCE.getUser()?.name === n.uploader);
+            
+            // Render specific props based on category
+            const isStudy = n.category === 'Study Material';
+            const badgeText = isStudy ? (n.courseCode || 'NOTES') : 'HARDWARE';
+            const detail1 = isStudy ? (n.branch ? n.branch + ' Dept' : (n.pages ? n.pages + ' pages' : '—')) : ('Condition: ' + n.condition);
+            const detail2 = isStudy ? (n.includes || 'Complete notes') : (n.desc || 'No details specified');
+
+            return `
+            <div class="market-card">
+                <div class="market-card__head" style="display:flex; justify-content:space-between;">
+                    <span>${badgeText}</span>
+                    <span style="opacity:0.7;">Upload: ${n.date}</span>
+                </div>
+                <div class="market-card__body">
+                    <div class="market-card__title">${n.title}</div>
+                    <div class="market-card__subject" style="margin-bottom:0.4rem;">${detail1}</div>
+                    <div class="market-card__subject" style="font-size:0.7rem; color:var(--primary); font-weight:bold;">${detail2}</div>
+                    <div class="market-card__uploader" style="margin-top:1rem;">by @${n.uploader}</div>
+                </div>
+                <div class="market-card__footer">
+                    <span class="market-card__price">${n.price} CR</span>
+                    ${isMyNote
+                        ? `<span class="btn btn--sm btn--success" style="cursor:default;">Your Item</span>`
+                        : `<button class="btn btn--sm" onclick="openChatModal(${n.id})">Chat</button>`
+                    }
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function openChatModal(noteId) {
+        const notes = GCE.getNotes();
+        const note  = notes.find(n => n.id === noteId);
+        if (!note) return;
+
+        pendingNoteId = noteId;
+
+        document.getElementById('modal-title').textContent = 'Chat with @' + note.uploader;
+        document.getElementById('modal-preview').innerHTML = `
+            <div style="font-size:0.8rem; margin-bottom:0.5rem; opacity:0.8;">You're inquiring about:</div>
+            <strong style="font-family:var(--font-head); font-size:0.6rem;">${note.title}</strong>
+            <div style="font-size:0.75rem; margin-top:0.4rem;">Listed price: <strong>${note.price} CR</strong></div>
+        `;
+        document.getElementById('chat-message').value = '';
+
+        const btn = document.getElementById('modal-confirm-btn');
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+        btn.onclick = () => sendMessage();
+
+        document.getElementById('chat-modal').classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('chat-modal').classList.remove('open');
+        pendingNoteId = null;
+    }
+
+    function sendMessage() {
+        const msg = document.getElementById('chat-message').value.trim();
+        if (!msg) {
+            showToast('Please type a message', 'error');
+            return;
+        }
+        
+        // Mock sending message
+        showToast('Message sent! Check your inbox later.', 'success');
+        closeModal();
+    }
+
+    // Close modal on overlay click
+    document.getElementById('chat-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // Init
+    document.getElementById('balance-display').textContent = GCE.getCredits() + ' CR';
+    renderNotes();
+</script>
+</body>
+</html>
