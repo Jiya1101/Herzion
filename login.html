@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,14 @@
     <meta name="description" content="Login or register to the Green Credits Ecosystem campus platform.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-        body { background-color: var(--bg); }
+        body {
+            background-color: var(--bg);
+        }
 
         .login-page {
             display: grid;
@@ -72,7 +77,7 @@
             gap: 1rem;
             padding: 0.8rem 1rem;
             border: 3px solid var(--black);
-            background-color: rgba(255,255,255,0.4);
+            background-color: rgba(255, 255, 255, 0.4);
             box-shadow: var(--shadow-sm);
             font-family: var(--font-head);
             font-size: 0.5rem;
@@ -150,168 +155,196 @@
             cursor: pointer;
             transition: background-color var(--transition);
         }
-        .tab-btn:last-child { border-right: none; }
-        .tab-btn.active { background-color: var(--primary); }
-        .tab-btn:hover:not(.active) { background-color: var(--bg); }
+
+        .tab-btn:last-child {
+            border-right: none;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background-color: var(--bg);
+        }
 
         @media (max-width: 768px) {
-            .login-page   { grid-template-columns: 1fr; }
-            .login-accent { display: none; }
-            .login-panel  { padding: 3rem 1.5rem; border-right: none; }
+            .login-page {
+                grid-template-columns: 1fr;
+            }
+
+            .login-accent {
+                display: none;
+            }
+
+            .login-panel {
+                padding: 3rem 1.5rem;
+                border-right: none;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div class="login-page">
+    <div class="login-page">
 
-    <!-- ─ LEFT: Form ─ -->
-    <div class="login-panel">
-        <a href="index.html" class="login-logo">
-            <span class="login-logo__sq"></span>
-            <span class="login-logo__text">GCE</span>
-        </a>
-        <p class="login-eyebrow">Green Credits Ecosystem</p>
+        <!-- ─ LEFT: Form ─ -->
+        <div class="login-panel">
+            <a href="index.html" class="login-logo">
+                <span class="login-logo__sq"></span>
+                <span class="login-logo__text">GCE</span>
+            </a>
+            <p class="login-eyebrow">Green Credits Ecosystem</p>
 
-        <!-- Tab switch -->
-        <div class="tab-row" role="tablist">
-            <button class="tab-btn active" id="tab-login" onclick="switchTab('login')" role="tab" aria-selected="true">Login</button>
-            <button class="tab-btn"        id="tab-register" onclick="switchTab('register')" role="tab" aria-selected="false">Register</button>
+            <!-- Tab switch -->
+            <div class="tab-row" role="tablist">
+                <button class="tab-btn active" id="tab-login" onclick="switchTab('login')" role="tab"
+                    aria-selected="true">Login</button>
+                <button class="tab-btn" id="tab-register" onclick="switchTab('register')" role="tab"
+                    aria-selected="false">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form class="login-form-box" id="form-login" onsubmit="handleLogin(event)" novalidate>
+                <h1 class="login-title">Enter the Platform</h1>
+
+                <div class="form-group">
+                    <label for="login-roll" class="form-label">Roll Number</label>
+                    <input type="text" id="login-roll" class="form-input" placeholder="e.g. CS21B042" required
+                        autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password" class="form-label">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="Your password" required
+                        autocomplete="current-password">
+
+                </div>
+
+                <button type="submit" class="btn btn--full btn--lg" id="btn-login">Login to Dashboard</button>
+
+                <p style="margin-top:1.2rem;font-size:0.75rem;opacity:0.6;text-align:center;">
+                    No account? <a href="#" onclick="switchTab('register');return false;"
+                        style="font-weight:700;text-decoration:underline;">Register here</a>
+                </p>
+            </form>
+
+            <!-- Register Form -->
+            <form class="login-form-box hidden" id="form-register" onsubmit="handleRegister(event)" novalidate>
+                <h1 class="login-title">Create Account</h1>
+
+                <div class="form-group">
+                    <label for="reg-name" class="form-label">Full Name</label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="e.g. Aarav Sharma" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-roll" class="form-label">Registration Number</label>
+                    <input type="text" id="reg-roll" class="form-input" placeholder="e.g. CS21B042" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-dept" class="form-label">Department</label>
+                    <select id="reg-dept" class="form-select" required>
+                        <option value="">— Select —</option>
+                        <option>Computer Science</option>
+                        <option>Information Technology</option>
+                        <option>Mechanical Engineering</option>
+                        <option>Electrical Engineering</option>
+                        <option>Civil Engineering</option>
+                        <option>Biotechnology</option>
+                        <option>Chemical Engineering</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password" class="form-label">Set Password</label>
+                    <input type="password" id="reg-password" class="form-input" placeholder="Min 6 characters" required
+                        autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn--full btn--lg" id="btn-register">Create Account &amp; Get 50
+                    CR</button>
+            </form>
         </div>
 
-        <!-- Login Form -->
-        <form class="login-form-box" id="form-login" onsubmit="handleLogin(event)" novalidate>
-            <h1 class="login-title">Enter the Platform</h1>
-
-            <div class="form-group">
-                <label for="login-roll" class="form-label">Roll Number</label>
-                <input type="text" id="login-roll" class="form-input" placeholder="e.g. CS21B042" required autocomplete="username">
-            </div>
-            <div class="form-group">
-                <label for="login-password" class="form-label">Password</label>
-                <input type="password" id="login-password" class="form-input" placeholder="Your password" required autocomplete="current-password">
-                <span class="form-hint">Demo: any password works (no backend yet)</span>
+        <!-- ─ RIGHT: Accent ─ -->
+        <div class="login-accent">
+            <div>
+                <div class="login-accent__big">Green<br>Credits</div>
             </div>
 
-            <button type="submit" class="btn btn--full btn--lg" id="btn-login">Login to Dashboard</button>
-
-            <p style="margin-top:1.2rem;font-size:0.75rem;opacity:0.6;text-align:center;">
-                No account? <a href="#" onclick="switchTab('register');return false;" style="font-weight:700;text-decoration:underline;">Register here</a>
-            </p>
-        </form>
-
-        <!-- Register Form -->
-        <form class="login-form-box hidden" id="form-register" onsubmit="handleRegister(event)" novalidate>
-            <h1 class="login-title">Create Account</h1>
-
-            <div class="form-group">
-                <label for="reg-name" class="form-label">Full Name</label>
-                <input type="text" id="reg-name" class="form-input" placeholder="e.g. Aarav Sharma" required>
+            <div class="login-accent__feature">
+                <div class="login-accent__item">
+                    <span class="login-accent__badge">+50</span>
+                    Start with 50 free credits
+                </div>
+                <div class="login-accent__item">
+                    <span class="login-accent__badge">+20</span>
+                    Upload notes, earn instantly
+                </div>
+                <div class="login-accent__item">
+                    <span class="login-accent__badge">GCE</span>
+                    Campus-wide credit economy
+                </div>
             </div>
-            <div class="form-group">
-                <label for="reg-roll" class="form-label">Roll Number</label>
-                <input type="text" id="reg-roll" class="form-input" placeholder="e.g. CS21B042" required>
-            </div>
-            <div class="form-group">
-                <label for="reg-dept" class="form-label">Department</label>
-                <select id="reg-dept" class="form-select" required>
-                    <option value="">— Select —</option>
-                    <option>Computer Science</option>
-                    <option>Mechanical Engineering</option>
-                    <option>Electrical Engineering</option>
-                    <option>Civil Engineering</option>
-                    <option>Mathematics</option>
-                    <option>Physics</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="reg-password" class="form-label">Set Password</label>
-                <input type="password" id="reg-password" class="form-input" placeholder="Min 6 characters" required autocomplete="new-password">
-            </div>
+        </div>
 
-            <button type="submit" class="btn btn--full btn--lg" id="btn-register">Create Account &amp; Get 50 CR</button>
-        </form>
     </div>
 
-    <!-- ─ RIGHT: Accent ─ -->
-    <div class="login-accent">
-        <div>
-            <div class="login-accent__big">Green<br>Credits</div>
-        </div>
+    <div id="toast-container"></div>
 
-        <div class="login-accent__feature">
-            <div class="login-accent__item">
-                <span class="login-accent__badge">+50</span>
-                Start with 50 free credits
-            </div>
-            <div class="login-accent__item">
-                <span class="login-accent__badge">+20</span>
-                Upload notes, earn instantly
-            </div>
-            <div class="login-accent__item">
-                <span class="login-accent__badge">GCE</span>
-                Campus-wide credit economy
-            </div>
-        </div>
-    </div>
+    <script src="app.js"></script>
+    <script>
+        // Redirect if already logged in
+        if (GCE.isLoggedIn()) window.location.href = 'dashboard.html';
 
-</div>
+        function switchTab(tab) {
+            const isLogin = (tab === 'login');
+            document.getElementById('form-login').classList.toggle('hidden', !isLogin);
+            document.getElementById('form-register').classList.toggle('hidden', isLogin);
+            document.getElementById('tab-login').classList.toggle('active', isLogin);
+            document.getElementById('tab-register').classList.toggle('active', !isLogin);
+        }
 
-<div id="toast-container"></div>
+        function handleLogin(e) {
+            e.preventDefault();
+            const roll = document.getElementById('login-roll').value.trim();
+            const pass = document.getElementById('login-password').value;
+            if (!roll) { showToast('Please enter your roll number', 'error'); return; }
+            if (!pass) { showToast('Please enter your password', 'error'); return; }
 
-<script src="app.js"></script>
-<script>
-    // Redirect if already logged in
-    if (GCE.isLoggedIn()) window.location.href = 'dashboard.html';
+            const btn = document.getElementById('btn-login');
+            btn.textContent = 'Authenticating...';
+            btn.disabled = true;
 
-    function switchTab(tab) {
-        const isLogin = (tab === 'login');
-        document.getElementById('form-login').classList.toggle('hidden', !isLogin);
-        document.getElementById('form-register').classList.toggle('hidden', isLogin);
-        document.getElementById('tab-login').classList.toggle('active', isLogin);
-        document.getElementById('tab-register').classList.toggle('active', !isLogin);
-    }
+            setTimeout(() => {
+                GCE.login(roll, roll);
+                showToast('Login successful! Loading dashboard...', 'success');
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+            }, 600);
+        }
 
-    function handleLogin(e) {
-        e.preventDefault();
-        const roll = document.getElementById('login-roll').value.trim();
-        const pass = document.getElementById('login-password').value;
-        if (!roll) { showToast('Please enter your roll number', 'error'); return; }
-        if (!pass)  { showToast('Please enter your password', 'error'); return; }
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const roll = document.getElementById('reg-roll').value.trim();
+            const dept = document.getElementById('reg-dept').value;
+            const pass = document.getElementById('reg-password').value;
 
-        const btn = document.getElementById('btn-login');
-        btn.textContent = 'Authenticating...';
-        btn.disabled = true;
+            if (!name) { showToast('Full name is required', 'error'); return; }
+            if (!roll) { showToast('Roll number is required', 'error'); return; }
+            if (!dept) { showToast('Please select your department', 'error'); return; }
+            if (!pass || pass.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
 
-        setTimeout(() => {
-            GCE.login(roll, roll);
-            showToast('Login successful! Loading dashboard...', 'success');
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
-        }, 600);
-    }
+            const btn = document.getElementById('btn-register');
+            btn.textContent = 'Creating account...';
+            btn.disabled = true;
 
-    function handleRegister(e) {
-        e.preventDefault();
-        const name = document.getElementById('reg-name').value.trim();
-        const roll = document.getElementById('reg-roll').value.trim();
-        const dept = document.getElementById('reg-dept').value;
-        const pass = document.getElementById('reg-password').value;
-
-        if (!name) { showToast('Full name is required', 'error'); return; }
-        if (!roll) { showToast('Roll number is required', 'error'); return; }
-        if (!dept) { showToast('Please select your department', 'error'); return; }
-        if (!pass || pass.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
-
-        const btn = document.getElementById('btn-register');
-        btn.textContent = 'Creating account...';
-        btn.disabled = true;
-
-        setTimeout(() => {
-            GCE.login(name, roll);
-            showToast('Account created! 50 CR added to your wallet.', 'success');
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
-        }, 700);
-    }
-</script>
+            setTimeout(() => {
+                GCE.login(name, roll);
+                showToast('Account created! 50 CR added to your wallet.', 'success');
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+            }, 700);
+        }
+    </script>
 </body>
+
 </html>

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mess Hub — Green Credits Ecosystem</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
         .dash-card {
@@ -17,6 +20,7 @@
             display: flex;
             flex-direction: column;
         }
+
         .dash-card__head {
             background-color: var(--black);
             color: var(--white);
@@ -26,7 +30,13 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        .dash-card__body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+
+        .dash-card__body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
         /* Meal slot with Menus */
         .meal-slot {
@@ -38,10 +48,29 @@
             gap: 1rem;
             flex-wrap: wrap;
         }
-        .meal-slot:last-child { border-bottom: none; }
-        .meal-slot__time { font-size: 0.75rem; font-family: var(--font-head); margin-bottom: 0.3rem;}
-        .meal-slot__name { font-weight: 700; font-size: 1.1rem; }
-        .meal-slot__menu { font-size: 0.85rem; opacity: 0.7; margin-top: 0.5rem; max-width: 400px;}
+
+        .meal-slot:last-child {
+            border-bottom: none;
+        }
+
+        .meal-slot__time {
+            font-size: 0.75rem;
+            font-family: var(--font-head);
+            margin-bottom: 0.3rem;
+        }
+
+        .meal-slot__name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .meal-slot__menu {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+            max-width: 400px;
+        }
+
         .meal-slot__status {
             font-family: var(--font-head);
             font-size: 0.5rem;
@@ -50,9 +79,21 @@
             border: 3px solid var(--black);
             white-space: nowrap;
         }
-        .meal-slot__status--booked  { background-color: var(--primary); }
-        .meal-slot__status--open    { background-color: var(--bg); cursor: pointer; transition: transform var(--transition); }
-        .meal-slot__status--open:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-sm); }
+
+        .meal-slot__status--booked {
+            background-color: var(--primary);
+        }
+
+        .meal-slot__status--open {
+            background-color: var(--bg);
+            cursor: pointer;
+            transition: transform var(--transition);
+        }
+
+        .meal-slot__status--open:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-sm);
+        }
 
         /* Tinder Rating System */
         .tinder-wrapper {
@@ -62,6 +103,7 @@
             margin: 0 auto;
             perspective: 1000px;
         }
+
         .tinder-empty {
             position: absolute;
             inset: 0;
@@ -75,6 +117,7 @@
             z-index: 0;
             padding: 2rem;
         }
+
         .tinder-card {
             position: absolute;
             inset: 0;
@@ -87,12 +130,14 @@
             transition: transform 0.4s ease, opacity 0.4s ease;
             z-index: 10;
         }
+
         .tinder-card__img {
             width: 100%;
             height: 250px;
             object-fit: cover;
             border-bottom: 4px solid var(--black);
         }
+
         .tinder-card__info {
             padding: 1.5rem;
             text-align: center;
@@ -104,12 +149,14 @@
             font-size: 1.2rem;
             text-transform: uppercase;
         }
+
         .tinder-controls {
             display: flex;
             justify-content: space-between;
             gap: 1rem;
             margin-top: 1.5rem;
         }
+
         .swipe-btn {
             flex: 1;
             padding: 1rem;
@@ -120,154 +167,201 @@
             text-transform: uppercase;
             transition: transform var(--transition);
         }
-        .swipe-btn:active { transform: translate(4px, 4px); }
-        .swipe-btn--down { background-color: #ff4444; color: var(--white); }
-        .swipe-btn--up { background-color: #44cc44; color: var(--white); }
+
+        .swipe-btn:active {
+            transform: translate(4px, 4px);
+        }
+
+        .swipe-btn--down {
+            background-color: #ff4444;
+            color: var(--white);
+        }
+
+        .swipe-btn--up {
+            background-color: #44cc44;
+            color: var(--white);
+        }
 
         /* Animations */
-        .swipe-left { transform: translateX(-150%) rotate(-15deg); opacity: 0; }
-        .swipe-right { transform: translateX(150%) rotate(15deg); opacity: 0; }
+        .swipe-left {
+            transform: translateX(-150%) rotate(-15deg);
+            opacity: 0;
+        }
+
+        .swipe-right {
+            transform: translateX(150%) rotate(15deg);
+            opacity: 0;
+        }
     </style>
 </head>
+
 <body>
 
-<!-- ─── NAV ───────────────────────────── -->
-<nav class="nav">
-    <div class="nav__inner">
-        <a href="index.html" class="nav__logo">
-            <span></span>
-            GCE
-        </a>
-        <ul class="nav__links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="marketplace.html">Marketplace</a></li>
-            <li><a href="mess.html" class="active">Mess Hub</a></li>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="upload.html">Upload</a></li>
-            <li><a href="inbox.html">Inbox</a></li>
-        </ul>
-        <div class="flex flex-gap" style="align-items:center;">
-            <span class="nav__credits-badge" id="nav-credits-badge"></span>
-            <button class="btn btn--sm btn--black" id="btn-logout">Logout</button>
-        </div>
-    </div>
-</nav>
-
-<!-- ─── DASH LAYOUT ─────────────────── -->
-<div class="dash-layout">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar__user">
-            <div class="sidebar__avatar" id="sidebar-avatar">?</div>
-            <div class="sidebar__name" id="sidebar-name">Loading…</div>
-            <div class="sidebar__role">Student</div>
-            <div class="sidebar__credits">
-                <span class="sidebar__credits-num" id="sidebar-credits">—</span>
-                <span class="sidebar__credits-label">Green Credits</span>
+    <!-- ─── NAV ───────────────────────────── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="index.html" class="nav__logo">
+                <span></span>
+                GCE
+            </a>
+            <ul class="nav__links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="marketplace.html">Marketplace</a></li>
+                <li><a href="mess.html" class="active">Mess Hub</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="upload.html">Upload</a></li>
+                <li><a href="inbox.html">Inbox</a></li>
+            </ul>
+            <div class="flex flex-gap" style="align-items:center;">
+                <span class="nav__credits-badge" id="nav-credits-badge"></span>
+                <button class="btn btn--sm btn--black" id="btn-logout">Logout</button>
             </div>
         </div>
+    </nav>
 
-        <nav class="sidebar__nav">
-            <a href="dashboard.html">
-                <span class="sidebar__icon sidebar__icon--hollow"></span>
-                Dashboard
-            </a>
-            <a href="marketplace.html">
-                <span class="sidebar__icon sidebar__icon--hollow"></span>
-                Marketplace
-            </a>
-            <a href="mess.html" class="active">
-                <span class="sidebar__icon"></span>
-                Mess Hub
-            </a>
-            <a href="upload.html">
-                <span class="sidebar__icon sidebar__icon--hollow"></span>
-                Upload Notes
-            </a>
-            <a href="login.html" id="sidebar-logout" style="margin-top:2rem;border-top:2px solid var(--black);padding-top:1rem;">
-                <span class="sidebar__icon sidebar__icon--hollow"></span>
-                Logout
-            </a>
-        </nav>
-    </aside>
+    <!-- ─── DASH LAYOUT ─────────────────── -->
+    <div class="dash-layout">
 
-    <!-- MAIN -->
-    <main class="dash-main">
-
-        <!-- Page header -->
-        <div style="margin-bottom:2.5rem;border-bottom:3px solid var(--black);padding-bottom:1.5rem;">
-            <div style="font-family:var(--font-head);font-size:0.45rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;margin-bottom:0.4rem;">GCE CAMPUS DINING</div>
-            <h1 style="font-size:1.5rem;text-transform:uppercase;line-height:1.4;">The Mess Hub</h1>
-        </div>
-
-        <div class="grid grid-2" style="gap:2rem; align-items: start;">
-            
-            <!-- Left: Meal Booking with Menus -->
-            <div class="dash-card">
-                <div class="dash-card__head">Book Your Meals</div>
-                <div class="dash-card__body">
-                    <div id="meal-slots"></div>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar__user">
+                <div class="sidebar__avatar" id="sidebar-avatar">?</div>
+                <div class="sidebar__name" id="sidebar-name">Loading…</div>
+                <div class="sidebar__role">Student</div>
+                <div class="sidebar__credits">
+                    <span class="sidebar__credits-num" id="sidebar-credits">—</span>
+                    <span class="sidebar__credits-label">Green Credits</span>
                 </div>
             </div>
 
-            <!-- Right: Tinder Meal Rating System -->
-            <div class="dash-card">
-                <div class="dash-card__head">Rate & Earn Credits</div>
-                <div class="dash-card__body">
-                    <p style="font-size:0.85rem; margin-bottom:1.5rem; opacity:0.8;">Swipe on this week's meals to help us optimize ingredients. Earn <b>+2 CR</b> per rating.</p>
-                    
-                    <div class="tinder-wrapper" id="tinder-wrapper">
-                        <div class="tinder-empty">
-                            <span style="font-family:var(--font-head); font-size:1.5rem; margin-bottom:1rem;">[DONE]</span>
-                            <strong>You're all caught up!</strong>
-                            <p style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;" id="tinder-earned-summary">Check back tomorrow for more earning opportunities.</p>
+            <nav class="sidebar__nav">
+                <a href="dashboard.html">
+                    <span class="sidebar__icon sidebar__icon--hollow"></span>
+                    Dashboard
+                </a>
+                <a href="marketplace.html">
+                    <span class="sidebar__icon sidebar__icon--hollow"></span>
+                    Marketplace
+                </a>
+                <a href="mess.html" class="active">
+                    <span class="sidebar__icon"></span>
+                    Mess Hub
+                </a>
+                <a href="upload.html">
+                    <span class="sidebar__icon sidebar__icon--hollow"></span>
+                    Upload Notes
+                </a>
+                <a href="login.html" id="sidebar-logout"
+                    style="margin-top:2rem;border-top:2px solid var(--black);padding-top:1rem;">
+                    <span class="sidebar__icon sidebar__icon--hollow"></span>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+
+            <!-- Page header -->
+            <div style="margin-bottom:2.5rem;border-bottom:3px solid var(--black);padding-bottom:1.5rem;">
+                <div
+                    style="font-family:var(--font-head);font-size:0.45rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;margin-bottom:0.4rem;">
+                    GCE CAMPUS DINING</div>
+                <h1 style="font-size:1.5rem;text-transform:uppercase;line-height:1.4;">The Mess Hub</h1>
+            </div>
+
+            <div class="grid grid-2" style="gap:2rem; align-items: start;">
+
+                <!-- Left: Meal Booking with Menus -->
+                <div class="dash-card">
+                    <div class="dash-card__head">Book Your Meals</div>
+                    <div class="dash-card__body">
+                        <div id="meal-slots"></div>
+                    </div>
+                </div>
+
+                <!-- Right: Tinder Meal Rating System -->
+                <div class="dash-card">
+                    <div class="dash-card__head">Rate & Earn Credits</div>
+                    <div class="dash-card__body">
+                        <p style="font-size:0.85rem; margin-bottom:1.5rem; opacity:0.8;">Swipe on this week's meals to
+                            help us optimize ingredients. Earn <b>+2 CR</b> per rating.</p>
+
+                        <div class="tinder-wrapper" id="tinder-wrapper">
+                            <div class="tinder-empty">
+                                <span
+                                    style="font-family:var(--font-head); font-size:1.5rem; margin-bottom:1rem;">[DONE]</span>
+                                <strong>You're all caught up!</strong>
+                                <p style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;" id="tinder-earned-summary">
+                                    Check back tomorrow for more earning opportunities.</p>
+                            </div>
+                            <div id="card-stack"></div>
                         </div>
-                        <div id="card-stack"></div>
-                    </div>
 
-                    <div class="tinder-controls">
-                        <button class="swipe-btn swipe-btn--down" onclick="swipe('left')">Nah</button>
-                        <button class="swipe-btn swipe-btn--up" onclick="swipe('right')">Love It</button>
-                    </div>
+                        <div class="tinder-controls">
+                            <button class="swipe-btn swipe-btn--down" onclick="swipe('left')">Nah</button>
+                            <button class="swipe-btn swipe-btn--up" onclick="swipe('right')">Love It</button>
+                        </div>
 
+                    </div>
                 </div>
+
             </div>
 
-        </div>
+        </main>
+    </div>
 
-    </main>
-</div>
+    <div id="toast-container"></div>
 
-<div id="toast-container"></div>
+    <script src="app.js"></script>
+    <script>
+        GCE.requireAuth('login.html');
+        const user = GCE.getUser();
 
-<script src="app.js"></script>
-<script>
-    GCE.requireAuth('login.html');
-    const user = GCE.getUser();
+        // Init User State
+        const name = user.name || user.roll;
+        document.getElementById('sidebar-avatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('sidebar-name').textContent = name;
 
-    // Init User State
-    const name = user.name || user.roll;
-    document.getElementById('sidebar-avatar').textContent  = name.charAt(0).toUpperCase();
-    document.getElementById('sidebar-name').textContent    = name;
-    
-    function updateCredits() {
-        const c = GCE.getCredits();
-        document.getElementById('sidebar-credits').textContent = c + ' CR';
-        document.getElementById('nav-credits-badge').textContent = c + ' CR';
-    }
-    updateCredits();
+        function updateCredits() {
+            const c = GCE.getCredits();
+            document.getElementById('sidebar-credits').textContent = c + ' CR';
+            document.getElementById('nav-credits-badge').textContent = c + ' CR';
+        }
+        updateCredits();
 
-    // ─── MEAL BOOKING UI ───────────────────
-    const menus = GCE.getMenus();
-    const savedMeals = JSON.parse(localStorage.getItem('gce_meals') || '[]');
-    let userMeals = menus.map((m, i) => ({ ...m, booked: !!savedMeals[i] }));
+        function isLocked(mealTime) {
+            const now = new Date();
 
-    function saveMeals() { localStorage.setItem('gce_meals', JSON.stringify(userMeals.map(m => m.booked))); }
+            // Extract hour from "07:30 – 09:00"
+            const hour = parseInt(mealTime.split(':')[0]);
 
-    function renderMealSlots() {
-        const container = document.getElementById('meal-slots');
-        container.innerHTML = userMeals.map((m, i) => `
+            const mealDate = new Date();
+            mealDate.setDate(mealDate.getDate() + 1);
+            mealDate.setHours(hour, 0, 0, 0);
+
+            const diffHours = (mealDate - now) / (1000 * 60 * 60);
+
+            return diffHours <= 12;
+        }
+
+        // ─── MEAL BOOKING UI ───────────────────
+        const menus = GCE.getMenus();
+        const savedMeals = JSON.parse(localStorage.getItem('gce_meals') || '[]');
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+
+        let userMeals = menus.map((m, i) => ({
+            ...m,
+            booked: !!savedMeals[i],
+            date: tomorrow.toDateString()
+        }));
+        function saveMeals() { localStorage.setItem('gce_meals', JSON.stringify(userMeals.map(m => m.booked))); }
+
+        function renderMealSlots() {
+            const container = document.getElementById('meal-slots');
+            container.innerHTML = userMeals.map((m, i) => `
             <div class="meal-slot">
                 <div style="flex:1;">
                     <div class="meal-slot__time">${m.time}</div>
@@ -280,64 +374,65 @@
                 >${m.booked ? 'Booked' : 'Book +5CR'}</span>
             </div>
         `).join('');
-    }
+        }
 
-    function bookSlot(index) {
-        userMeals[index].booked = true;
-        saveMeals();
-        GCE.addCredits(5, 'Booked ' + userMeals[index].name);
-        updateCredits();
+        function bookSlot(index) {
+            userMeals[index].booked = true;
+            saveMeals();
+            GCE.addCredits(5, 'Booked ' + userMeals[index].name);
+            updateCredits();
+            renderMealSlots();
+            showToast(userMeals[index].name + ' booked — +5 CR added', 'success');
+        }
         renderMealSlots();
-        showToast(userMeals[index].name + ' booked — +5 CR added', 'success');
-    }
-    renderMealSlots();
 
-    // ─── TINDER SWIPE SYSTEM ───────────────
-    const swipeMeals = [...GCE.getSwipeMeals()];
-    let earnedFromSwiping = 0;
+        // ─── TINDER SWIPE SYSTEM ───────────────
+        const swipeMeals = [...GCE.getSwipeMeals()];
+        let earnedFromSwiping = 0;
 
-    function renderStack() {
-        const stack = document.getElementById('card-stack');
-        stack.innerHTML = swipeMeals.map((meal, index) => `
+        function renderStack() {
+            const stack = document.getElementById('card-stack');
+            stack.innerHTML = swipeMeals.map((meal, index) => `
             <div class="tinder-card" id="card-${index}" style="z-index: ${20 - index};">
                 <img src="${meal.image}" alt="${meal.mealName}" class="tinder-card__img">
                 <div class="tinder-card__info">${meal.mealName}</div>
             </div>
         `).join('');
-    }
+        }
 
-    function swipe(dir) {
-        if(swipeMeals.length === 0) return;
-        const currentCard = document.getElementById(`card-0`);
-        
-        // Add animation class
-        if(dir === 'left') currentCard.classList.add('swipe-left');
-        else currentCard.classList.add('swipe-right');
+        function swipe(dir) {
+            if (swipeMeals.length === 0) return;
+            const currentCard = document.getElementById(`card-0`);
 
-        // Reward and proceed
-        earnedFromSwiping += 2;
-        GCE.addCredits(2, 'Rated Mess Meal');
-        updateCredits();
-        showToast('+2 CR Earned', 'success');
+            // Add animation class
+            if (dir === 'left') currentCard.classList.add('swipe-left');
+            else currentCard.classList.add('swipe-right');
 
-        setTimeout(() => {
-            swipeMeals.shift(); // Remove top meal
-            renderStack(); // Rerender
-            if (swipeMeals.length === 0) {
-                document.getElementById('tinder-earned-summary').innerHTML = `You earned an extra <b>${earnedFromSwiping} CR</b> rating meals today!`;
-                document.querySelector('.tinder-controls').style.display = 'none';
-            }
-        }, 350);
-    }
+            // Reward and proceed
+            earnedFromSwiping += 2;
+            GCE.addCredits(2, 'Rated Mess Meal');
+            updateCredits();
+            showToast('+2 CR Earned', 'success');
 
-    renderStack();
+            setTimeout(() => {
+                swipeMeals.shift(); // Remove top meal
+                renderStack(); // Rerender
+                if (swipeMeals.length === 0) {
+                    document.getElementById('tinder-earned-summary').innerHTML = `You earned an extra <b>${earnedFromSwiping} CR</b> rating meals today!`;
+                    document.querySelector('.tinder-controls').style.display = 'none';
+                }
+            }, 350);
+        }
 
-    // Sidebar Logout
-    document.getElementById('sidebar-logout').addEventListener('click', e => {
-        e.preventDefault();
-        GCE.logout();
-        window.location.href = 'index.html';
-    });
-</script>
+        renderStack();
+
+        // Sidebar Logout
+        document.getElementById('sidebar-logout').addEventListener('click', e => {
+            e.preventDefault();
+            GCE.logout();
+            window.location.href = 'index.html';
+        });
+    </script>
 </body>
+
 </html>
